@@ -2,6 +2,7 @@
 #include <QPixmap>
 #include <QPainter>
 #include <QDebug>
+#include <QFileDialog>
 
 IT::IT(QWidget *parent)
     : QWidget(parent)
@@ -85,6 +86,13 @@ void IT::rotatedImage()
 
 void IT::saveImage()
 {
-    dstImg.save("../../test.png", "PNG", 100);
-    qDebug() << "save";
+    QString dir;
+    dir = QFileDialog::getExistingDirectory(this, tr("儲存檔案"), "..\\..\\");
+    QDir saveDir(dir);
+    bool ok;
+    if (dstImg.isNull())
+        ok = srcImg.save(saveDir.filePath("test.png"), "PNG", 100);
+    else
+        ok = dstImg.save(saveDir.filePath("test.png"), "PNG", 100);
+    qDebug() << dir << " " << ok;
 }
